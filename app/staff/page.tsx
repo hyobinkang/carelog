@@ -23,6 +23,7 @@ export default function StaffPage() {
   const [patientFilter, setPatientFilter] = useState<string>("");
   const [records, setRecords] = useState<CareRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [assigned, setAssigned] = useState<string[]>([]);
   const [assignOpen, setAssignOpen] = useState(false);
   const [draftSel, setDraftSel] = useState<string[]>([]);
@@ -60,13 +61,21 @@ export default function StaffPage() {
   }
 
   const load = useCallback(async () => {
-    setLoading(true);
-    const qs = new URLSearchParams({ status: tab });
-    if (patientFilter) qs.set("patientId", patientFilter);
-    const res = await fetch(`/api/records?${qs}`);
-    const data = await res.json();
-    setRecords(data.records ?? []);
-    setLoading(false);
+  	setLoading(true);
+  	setLoadError(false);
+  	try {
+    	const qs = new URLSearchParams({ status: tab });
+    	if (patientFilter) qs.set("patientId", patientFilter);
+    	const res = await fetch(`/api/records?${qs}`);
+    	if (!res.ok) throw new Error(String(res.status));
+    	const data = await res.json();
+    	setRecords(data.records ?? []);
+  	} catch {
+    	setRecords([]);
+    	setLoadError(true);
+  	} finally {
+    	setLoading(false);
+  	}
   }, [tab, patientFilter]);
 
   useEffect(() => {
@@ -197,7 +206,14 @@ export default function StaffPage() {
         const visible = records.filter(
           (r) => facIds.has(r.patientId) && assigned.includes(r.patientId),
         );
-        return assigned.length === 0 ? (
+        return loadError ? (
+  			<div className="pt-16 text-center">
+    			<p className="text-[15px] font-semibold text-sub">기록을 불러오지 못했어요</p>
+    			<button onClick={load} className="mt-3 rounded-xl bg-white px-4 py-2 text-[13px] font-semibold text-blue transition active:scale-[0.97]">
+      				다시 시도
+    			</button>
+  			</div>
+		) : assigned.length === 0 ? (
           <div className="pt-16 text-center">
             <p className="text-[15px] font-semibold text-sub">
               아직 담당 어르신이 없어요
