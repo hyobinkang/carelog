@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f2f4f6;
+  --color-ink: #191f28;
+  --color-sub: #6b7684;
+  --color-faint: #8b95a1;
+  --color-line: #e5e8eb;
+  --color-blue: #3182f6;
+  --color-blue-dark: #1b64da;
+  --color-blue-soft: #e8f3ff;
+  --color-red: #e5313e;
+  --color-red-soft: #fdebee;
+  --color-green: #008f5d;
+  --color-green-soft: #e5f7ee;
+  --color-amber: #b45309;
+  --color-amber-soft: #fff4d6;
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 가로 스크롤 칩 행의 스크롤바 숨김 */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
