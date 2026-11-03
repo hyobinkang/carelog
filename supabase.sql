@@ -3,7 +3,7 @@
 create table if not exists care_records (
   id uuid primary key default gen_random_uuid(),
   patient_id text not null,
-  lang text not null check (lang in ('vi', 'en', 'ko')),
+  lang text not null check (lang in ('vi', 'en', 'ko', 'id', 'ne', 'uz')),
   original_text text not null,
   translation_ko text not null default '',
   back_translation text,
@@ -11,6 +11,7 @@ create table if not exists care_records (
   risks jsonb not null default '[]',
   status text not null default 'draft' check (status in ('draft', 'confirmed')),
   ai_mode text not null default 'live',
+  share_scope text not null default 'internal' check (share_scope in ('internal', 'family')),
   created_at timestamptz not null default now(),
   confirmed_at timestamptz
 );

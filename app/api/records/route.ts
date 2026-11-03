@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
   if (!patientId || !getPatient(patientId)) {
     return NextResponse.json({ error: "대상자를 선택하세요" }, { status: 400 });
   }
-  if (!lang || !["vi", "en", "ko"].includes(lang)) {
+  if (!lang || !["vi", "en", "ko", "id", "ne", "uz"].includes(lang)) {
     return NextResponse.json({ error: "언어를 선택하세요" }, { status: 400 });
   }
   const trimmed = (text ?? "").trim();

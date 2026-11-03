@@ -1,10 +1,13 @@
 // 케어로그 공통 타입 정의
-export type Lang = "vi" | "en" | "ko";
+export type Lang = "vi" | "en" | "ko" | "id" | "ne" | "uz";
 
 export const LANG_LABELS: Record<Lang, string> = {
   vi: "Tiếng Việt",
   en: "English",
   ko: "한국어(혼용)",
+  id: "Bahasa Indonesia",
+  ne: "नेपाली",
+  uz: "O'zbekcha",
 };
 
 export const FIELD_KEYS = [
@@ -16,6 +19,7 @@ export const FIELD_KEYS = [
   "mental",
   "activity",
   "special",
+  "followUp",
 ] as const;
 export type FieldKey = (typeof FIELD_KEYS)[number];
 
@@ -28,6 +32,7 @@ export const FIELD_LABELS: Record<FieldKey, string> = {
   mental: "인지·정서",
   activity: "활동",
   special: "특이사항",
+  followUp: "다음 확인",
 };
 
 export const RISK_CATEGORIES = [
@@ -71,6 +76,8 @@ export interface CareRecord {
   confirmedAt?: string;
   /** live = 실제 LLM 호출, mock = 모의 응답 */
   aiMode: "live" | "mock";
+  /** 담당자가 확정 시 결정하는 공유 범위 (기본: 기관 내부) */
+  shareScope?: "internal" | "family";
 }
 
 export interface AiDraft {

@@ -24,6 +24,7 @@ export async function PATCH(req: NextRequest, ctx: Ctx) {
     fields?: Record<string, string>;
     translationKo?: string;
     action?: "confirm";
+    shareScope?: "internal" | "family";
   };
   try {
     body = await req.json();
@@ -42,6 +43,9 @@ export async function PATCH(req: NextRequest, ctx: Ctx) {
   }
   if (typeof body.translationKo === "string" && body.translationKo.trim()) {
     patch.translationKo = body.translationKo.trim();
+  }
+  if (body.shareScope === "internal" || body.shareScope === "family") {
+    patch.shareScope = body.shareScope;
   }
   if (body.action === "confirm") {
     if (existing.status === "confirmed") {

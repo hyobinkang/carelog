@@ -21,6 +21,7 @@ export default function ReviewPage() {
   const [record, setRecord] = useState<CareRecord | null>(null);
   const [translationKo, setTranslationKo] = useState("");
   const [fields, setFields] = useState<Partial<Record<FieldKey, string>>>({});
+  const [shareScope, setShareScope] = useState<"internal" | "family">("internal");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
@@ -35,6 +36,7 @@ export default function ReviewPage() {
     setRecord(data.record);
     setTranslationKo(data.record.translationKo);
     setFields(data.record.fields ?? {});
+    setShareScope(data.record.shareScope ?? "internal");
   }, [id]);
 
   useEffect(() => {
@@ -172,6 +174,38 @@ export default function ReviewPage() {
         </div>
       </div>
 
+      {/* 공유 범위 — 담당자가 확정 시 결정 (가족 리포트는 승인 후에만) */}
+      <div className="mt-3 rounded-3xl bg-white p-5">
+        <p className="text-[12px] font-semibold text-faint">공유 범위</p>
+        {readOnly ? (
+          <p className="mt-1.5 text-[14px] font-bold">
+            {record.shareScope === "family" ? "가족 공유 허용" : "기관 내부만"}
+          </p>
+        ) : (
+          <div className="mt-2.5 flex rounded-2xl bg-bg p-1 text-[13px] font-semibold">
+            {(
+              [
+                ["internal", "기관 내부만"],
+                ["family", "가족 공유 허용"],
+              ] as const
+            ).map(([v, label]) => (
+              <button
+                key={v}
+                onClick={() => setShareScope(v)}
+                className={`flex-1 rounded-xl py-2 transition ${
+                  shareScope === v ? "bg-white text-ink shadow-sm" : "text-sub"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+        <p className="mt-2 text-[12px] text-faint">
+          가족 리포트는 담당자가 확정한 기록만 공유돼요
+        </p>
+      </div>
+
       {error && (
         <p className="mt-3 rounded-2xl bg-red-soft px-4 py-3 text-[14px] font-medium text-red">
           {error}
@@ -187,7 +221,7 @@ export default function ReviewPage() {
         <div className="fixed inset-x-0 bottom-0 bg-gradient-to-t from-bg via-bg/95 to-transparent px-5 pb-6 pt-8">
           <div className="mx-auto flex max-w-xl gap-2.5">
             <button
-              onClick={() => patch({ translationKo, fields }, "저장했어요")}
+              onClick={() => patch({ translationKo, fields, shareScope }, "저장했어요")}
               disabled={busy}
               className="flex-1 rounded-2xl bg-white py-4 text-[16px] font-bold transition active:scale-[0.98] disabled:opacity-50"
             >
@@ -196,7 +230,7 @@ export default function ReviewPage() {
             <button
               onClick={() =>
                 patch(
-                  { translationKo, fields, action: "confirm" },
+                  { translationKo, fields, shareScope, action: "confirm" },
                   "확정했어요",
                   true,
                 )

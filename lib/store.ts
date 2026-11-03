@@ -77,6 +77,7 @@ function toRow(r: Partial<CareRecord>) {
   if (r.status !== undefined) row.status = r.status;
   if (r.confirmedAt !== undefined) row.confirmed_at = r.confirmedAt;
   if (r.aiMode !== undefined) row.ai_mode = r.aiMode;
+  if (r.shareScope !== undefined) row.share_scope = r.shareScope;
   return row;
 }
 function fromRow(row: any): CareRecord {
@@ -93,6 +94,7 @@ function fromRow(row: any): CareRecord {
     createdAt: row.created_at,
     confirmedAt: row.confirmed_at ?? undefined,
     aiMode: row.ai_mode ?? "live",
+    shareScope: row.share_scope ?? "internal",
   };
 }
 

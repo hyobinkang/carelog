@@ -1,5 +1,5 @@
 // 전국 기관 데모 DB — 실서비스에서는 건보공단 장기요양기관 검색 API로 대체
-export const FACILITY_DB = [
+export const FACILITY_DB: { name: string; region: string; edu?: boolean }[] = [
   { name: "하나요양원", region: "서울 은평구" },
   { name: "행복재가복지센터", region: "서울 마포구" },
   { name: "푸른솔요양원", region: "경기 용인시" },
@@ -10,4 +10,5 @@ export const FACILITY_DB = [
   { name: "한마음실버케어", region: "대전 서구" },
   { name: "늘푸른요양원", region: "광주 북구" },
   { name: "바다빛요양원", region: "제주 제주시" },
+  { name: "한빛요양보호사교육원", region: "서울 강서구", edu: true },
 ];

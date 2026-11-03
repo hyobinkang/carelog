@@ -20,6 +20,8 @@ export const PATIENTS: Patient[] = [
   { id: "p7", name: "오병철", room: "104호", age: 81, sex: "남", note: "파킨슨 초기, 연하 곤란 주의", facility: "푸른솔요양원" },
   { id: "p8", name: "서말자", room: "202호", age: 87, sex: "여", note: "중등도 치매, 야간 배회 이력", facility: "은빛사랑요양원" },
   { id: "p9", name: "임점동", room: "301호", age: 84, sex: "남", note: "만성 폐질환, 산소포화도 관찰", facility: "해든노인복지센터" },
+  { id: "p10", name: "이복례", room: "실습 1", age: 83, sex: "여", note: "교육 실습용 합성 사례 — 경도 인지저하", facility: "한빛요양보호사교육원" },
+  { id: "p11", name: "강판석", room: "실습 2", age: 80, sex: "남", note: "교육 실습용 합성 사례 — 당뇨·고혈압", facility: "한빛요양보호사교육원" },
 ];
 
 export function getPatient(id: string): Patient | undefined {

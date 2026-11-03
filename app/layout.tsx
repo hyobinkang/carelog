@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "케어로그 CareLog",
@@ -35,6 +36,7 @@ export default function RootLayout({
         <footer className="mx-auto max-w-xl px-5 py-6 text-[11px] text-faint">
           데모 서비스 · 모든 대상자와 기록은 가상 데이터입니다
         </footer>
+		<Analytics />
       </body>
     </html>
   );

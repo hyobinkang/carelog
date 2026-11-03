@@ -88,6 +88,7 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawNote: "Hồ sơ chăm sóc của các cụ vẫn được lưu tại cơ sở để người chăm sóc tiếp theo xem được.",
     withdrawConfirm: "Xóa tài khoản",
     cancel: "Hủy",
+    eduTag: "Luyện tập ghi chép",
   },
   en: {
     heading: "Who did you\ncare for today?",
@@ -142,6 +143,7 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawNote: "Residents' care records stay with the facility so the next caregiver can see them.",
     withdrawConfirm: "Delete account",
     cancel: "Cancel",
+    eduTag: "Record training",
   },
   ko: {
     heading: "오늘 누구를\n돌보셨나요?",
@@ -196,6 +198,172 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawNote: "탈퇴해도 어르신들의 돌봄 기록은 기관에 남아, 다음 요양보호사가 이어서 볼 수 있어요.",
     withdrawConfirm: "탈퇴하기",
     cancel: "취소",
+    eduTag: "기록 연습 과정",
+  },
+  id: {
+    heading: "Hari ini Anda\nmerawat siapa?",
+    placeholder: "Nenek makan setengah porsi bubur, mengeluh nyeri lutut…",
+    submit: "Lihat draf",
+    previewTitle: "전송 전 확인",
+    verifyQ: "Apakah ini sudah benar?",
+    confirm: "Ya, kirim",
+    back: "Ubah",
+    sentKo: "담당자에게 전송했어요",
+    sent: "Terkirim ke penanggung jawab",
+    newMemo: "Catatan baru",
+    tabHome: "Beranda",
+    tabWrite: "Catat",
+    tabToday: "Hari ini",
+    tabMy: "Saya",
+    todoPlaceholder: "Tugas (mis. berikan obat malam)…",
+    add: "Tambah",
+    todayEmpty: "Jadwal hari ini dan catatan terkirim tampil di sini",
+    myName: "Nama",
+    myLang: "Bahasa pencatatan",
+    greeting: "Halo",
+    statPending: "Menunggu",
+    statConfirmed: "Disetujui",
+    statTodos: "Tugas tersisa",
+    ctaWrite: "Tulis catatan",
+    ctaWriteSub: "Tulis dalam bahasa Indonesia, AI menerjemahkan",
+    patients: "Lansia di fasilitas saya",
+    myFacility: "Tempat kerja",
+    myJoined: "Bergabung",
+    statSent: "Terkirim",
+    statRisk: "Tanda risiko",
+    rowNotif: "Notifikasi",
+    notifOn: "Aktif",
+    notifOff: "Ketuk untuk aktifkan",
+    rowAbout: "Tentang layanan",
+    logout: "Keluar",
+    obStep1: "Bahasa",
+    obStep2: "Nama",
+    obStepFac: "Fasilitas",
+    obStep3: "Selesai",
+    obNameTitle: "Siapa nama Anda?",
+    obNamePh: "Siti Rahma",
+    obFacTitle: "Di mana Anda bekerja?",
+    obFacPh: "Cari tempat kerja",
+    obFacEmpty: "Tidak ditemukan",
+    obNext: "Lanjut",
+    obDoneTitle: "Siap!",
+    obDoneSub: "Tulis catatan dalam bahasa Indonesia —\nAI mengubahnya menjadi catatan bahasa Korea",
+    obStart: "Mulai",
+    rowWithdraw: "Hapus akun",
+    withdrawNote: "Catatan perawatan lansia tetap tersimpan di fasilitas agar perawat berikutnya dapat melihatnya.",
+    withdrawConfirm: "Hapus akun",
+    cancel: "Batal",
+    eduTag: "Latihan pencatatan",
+  },
+  ne: {
+    heading: "आज तपाईंले\nकसको हेरचाह गर्नुभयो?",
+    placeholder: "हजुरआमाले आधा कचौरा जाउलो खानुभयो, घुँडा दुखेको बताउनुभयो…",
+    submit: "मस्यौदा हेर्नुहोस्",
+    previewTitle: "전송 전 확인",
+    verifyQ: "के यो सही हो?",
+    confirm: "हो, पठाउनुहोस्",
+    back: "सच्याउनुहोस्",
+    sentKo: "담당자에게 전송했어요",
+    sent: "जिम्मेवार व्यक्तिलाई पठाइयो",
+    newMemo: "नयाँ टिपोट",
+    tabHome: "गृह",
+    tabWrite: "टिपोट",
+    tabToday: "आज",
+    tabMy: "मेरो",
+    todoPlaceholder: "गर्नुपर्ने काम (जस्तै: बेलुकाको औषधि)…",
+    add: "थप्नुहोस्",
+    todayEmpty: "आजको तालिका र पठाइएका टिपोटहरू यहाँ देखिन्छन्",
+    myName: "नाम",
+    myLang: "लेख्ने भाषा",
+    greeting: "नमस्ते",
+    statPending: "समीक्षा पर्खँदै",
+    statConfirmed: "स्वीकृत",
+    statTodos: "बाँकी काम",
+    ctaWrite: "टिपोट लेख्नुहोस्",
+    ctaWriteSub: "नेपालीमा लेख्नुहोस्, AI ले अनुवाद गर्छ",
+    patients: "हाम्रो संस्थाका ज्येष्ठ नागरिक",
+    myFacility: "कार्यस्थल",
+    myJoined: "सामेल",
+    statSent: "पठाइएको",
+    statRisk: "जोखिम संकेत",
+    rowNotif: "सूचना",
+    notifOn: "खुला",
+    notifOff: "खोल्न ट्याप गर्नुहोस्",
+    rowAbout: "सेवा बारे",
+    logout: "लगआउट",
+    obStep1: "भाषा",
+    obStep2: "नाम",
+    obStepFac: "संस्था",
+    obStep3: "सकियो",
+    obNameTitle: "तपाईंको नाम के हो?",
+    obNamePh: "सरिता तामाङ",
+    obFacTitle: "तपाईं कहाँ काम गर्नुहुन्छ?",
+    obFacPh: "कार्यस्थल खोज्नुहोस्",
+    obFacEmpty: "फेला परेन",
+    obNext: "अर्को",
+    obDoneTitle: "तयार!",
+    obDoneSub: "नेपालीमा टिपोट लेख्नुहोस् —\nAI ले कोरियाली रेकर्ड बनाउँछ",
+    obStart: "सुरु गर्नुहोस्",
+    rowWithdraw: "खाता मेटाउनुहोस्",
+    withdrawNote: "ज्येष्ठ नागरिकका हेरचाह रेकर्ड संस्थामै रहन्छन्, अर्का हेरचाहकर्ताले हेर्न सक्छन्।",
+    withdrawConfirm: "मेटाउनुहोस्",
+    cancel: "रद्द",
+    eduTag: "रेकर्ड अभ्यास",
+  },
+  uz: {
+    heading: "Bugun kimga\ng'amxo'rlik qildingiz?",
+    placeholder: "Buvi yarim kosa bo'tqa yedi, tizzasi og'riyotganini aytdi…",
+    submit: "Qoralamani ko'rish",
+    previewTitle: "전송 전 확인",
+    verifyQ: "Bu to'g'rimi?",
+    confirm: "Ha, yuborish",
+    back: "Tahrirlash",
+    sentKo: "담당자에게 전송했어요",
+    sent: "Mas'ul xodimga yuborildi",
+    newMemo: "Yangi yozuv",
+    tabHome: "Bosh",
+    tabWrite: "Yozuv",
+    tabToday: "Bugun",
+    tabMy: "Men",
+    todoPlaceholder: "Vazifa (mas.: kechki dori berish)…",
+    add: "Qo'shish",
+    todayEmpty: "Bugungi reja va yuborilgan yozuvlar shu yerda ko'rinadi",
+    myName: "Ism",
+    myLang: "Yozish tili",
+    greeting: "Salom",
+    statPending: "Kutilmoqda",
+    statConfirmed: "Tasdiqlangan",
+    statTodos: "Qolgan ishlar",
+    ctaWrite: "Yozuv qoldirish",
+    ctaWriteSub: "O'zbekcha yozing, AI tarjima qiladi",
+    patients: "Muassasamizdagi keksalar",
+    myFacility: "Ish joyi",
+    myJoined: "Qo'shilgan",
+    statSent: "Yuborilgan",
+    statRisk: "Xavf belgilari",
+    rowNotif: "Bildirishnoma",
+    notifOn: "Yoqilgan",
+    notifOff: "Yoqish uchun bosing",
+    rowAbout: "Xizmat haqida",
+    logout: "Chiqish",
+    obStep1: "Til",
+    obStep2: "Ism",
+    obStepFac: "Muassasa",
+    obStep3: "Tayyor",
+    obNameTitle: "Ismingiz nima?",
+    obNamePh: "Dilnoza Karimova",
+    obFacTitle: "Qayerda ishlaysiz?",
+    obFacPh: "Ish joyini qidirish",
+    obFacEmpty: "Topilmadi",
+    obNext: "Davom etish",
+    obDoneTitle: "Tayyor!",
+    obDoneSub: "O'zbekcha yozuv qoldiring —\nAI uni koreyscha hujjatga aylantiradi",
+    obStart: "Boshlash",
+    rowWithdraw: "Hisobni o'chirish",
+    withdrawNote: "Keksalarning parvarish yozuvlari muassasada saqlanadi, keyingi parvarishchi ko'ra oladi.",
+    withdrawConfirm: "O'chirish",
+    cancel: "Bekor",
+    eduTag: "Yozuv mashqi",
   },
 };
 
@@ -227,12 +395,42 @@ const QUICK: Record<Lang, { label: string; phrases: string[] }[]> = {
     { label: "기분·행동", phrases: ["기분 안정적", "불안해하심", "배회하심", "화를 내심"] },
     { label: "위험 신호", phrases: ["넘어질 뻔함", "넘어지심", "미열 있음", "고열 있음", "숨쉬기 힘들어하심"] },
   ],
+  id: [
+    { label: "Makan", phrases: ["Makan habis", "Makan setengah", "Makan sekitar 1/3", "Menolak makan", "Sulit menelan"] },
+    { label: "Nyeri", phrases: ["Mengeluh sakit kepala", "Nyeri punggung", "Nyeri lutut", "Nyeri perut", "Nyeri dada"] },
+    { label: "Obat", phrases: ["Minum semua obat", "Menolak minum obat", "Minum sebagian obat"] },
+    { label: "Tidur", phrases: ["Tidur nyenyak", "Kurang tidur", "Tidur siang lama"] },
+    { label: "Buang air", phrases: ["BAB normal", "Sembelit", "Diare", "Popok diganti"] },
+    { label: "Suasana hati", phrases: ["Tenang dan stabil", "Tampak cemas", "Mondar-mandir", "Mudah marah"] },
+    { label: "Tanda bahaya", phrases: ["Hampir jatuh", "Terjatuh", "Demam ringan", "Demam tinggi", "Sulit bernapas"] },
+  ],
+  ne: [
+    { label: "खानपान", phrases: ["पुरै खानुभयो", "आधा खानुभयो", "करिब १/३ खानुभयो", "खान मान्नुभएन", "निल्न गाह्रो"] },
+    { label: "दुखाइ", phrases: ["टाउको दुखेको", "ढाड दुखेको", "घुँडा दुखेको", "पेट दुखेको", "छाती दुखेको"] },
+    { label: "औषधि", phrases: ["सबै औषधि खानुभयो", "औषधि खान मान्नुभएन", "केही मात्र खानुभयो"] },
+    { label: "निद्रा", phrases: ["राम्रो सुत्नुभयो", "राम्रो सुत्नुभएन", "दिउँसो धेरै सुत्नुभयो"] },
+    { label: "दिसापिसाब", phrases: ["दिसा सामान्य", "कब्जियत", "पखाला", "डाइपर फेरियो"] },
+    { label: "मनोदशा", phrases: ["शान्त र स्थिर", "चिन्तित देखिनुभयो", "यताउता हिँड्नुभयो", "झर्किनुभयो"] },
+    { label: "खतराका संकेत", phrases: ["लड्न लाग्नुभयो", "लड्नुभयो", "हल्का ज्वरो", "उच्च ज्वरो", "सास फेर्न गाह्रो"] },
+  ],
+  uz: [
+    { label: "Ovqatlanish", phrases: ["To'liq yedi", "Yarmini yedi", "Taxminan 1/3 yedi", "Ovqatdan bosh tortdi", "Yutishi qiyin"] },
+    { label: "Og'riq", phrases: ["Boshi og'rigan", "Bel og'rig'i", "Tizza og'rig'i", "Qorin og'rig'i", "Ko'krak og'rig'i"] },
+    { label: "Dori", phrases: ["Barcha dorini ichdi", "Dori ichishdan bosh tortdi", "Bir qismini ichdi"] },
+    { label: "Uyqu", phrases: ["Yaxshi uxladi", "Yomon uxladi", "Kunduzi uzoq uxladi"] },
+    { label: "Hojat", phrases: ["Ich kelishi normal", "Qabziyat", "Ich ketish", "Taglik almashtirildi"] },
+    { label: "Kayfiyat", phrases: ["Xotirjam va barqaror", "Xavotirda ko'rindi", "U yoq-bu yoqqa yurdi", "Tez jahli chiqdi"] },
+    { label: "Xavf belgilari", phrases: ["Yiqilishiga oz qoldi", "Yiqildi", "Yengil isitma", "Yuqori isitma", "Nafas olishi qiyin"] },
+  ],
 };
 
 const EXAMPLES: Record<Lang, string> = {
   vi: "Bà ăn được nửa bát cháo, buổi chiều kêu đau đầu gối. Uống thuốc huyết áp lúc 9 giờ sáng.",
   en: "He refused breakfast this morning and felt a bit feverish. Took his diabetes medication at 8am.",
   ko: "아침 반만 먹음, 약 먹음, 기침 조금. 오후에 복도에서 살짝 미끄러질 뻔함",
+  id: "Nenek makan setengah porsi bubur, sore hari mengeluh nyeri lutut. Minum obat tekanan darah jam 9 pagi.",
+  ne: "हजुरआमाले आधा कचौरा जाउलो खानुभयो, घुँडा दुखेको बताउनुभयो। बिहान ९ बजे रक्तचापको औषधि खानुभयो।",
+  uz: "Buvi yarim kosa bo'tqa yedi, tizzasi og'riyotganini aytdi. Ertalab soat 9 da qon bosimi dorisini ichdi.",
 };
 
 type Step = "edit" | "preview" | "sent";
@@ -244,33 +442,47 @@ const CORE_LABELS: Record<Lang, Record<(typeof CORE_KEYS)[number], string>> = {
   vi: { meal: "Ăn uống", excretion: "Đại tiểu tiện", sleep: "Giấc ngủ" },
   en: { meal: "Meals", excretion: "Toileting", sleep: "Sleep" },
   ko: { meal: "식사", excretion: "배변", sleep: "수면" },
+  id: { meal: "Makan", excretion: "Buang air", sleep: "Tidur" },
+  ne: { meal: "खानपान", excretion: "दिसापिसाब", sleep: "निद्रा" },
+  uz: { meal: "Ovqat", excretion: "Hojat", sleep: "Uyqu" },
 };
 const COVERAGE_T: Record<Lang, string> = {
   vi: "chưa ghi",
   en: "not recorded",
   ko: "기록 안 됨",
+  id: "belum dicatat",
+  ne: "लेखिएको छैन",
+  uz: "yozilmagan",
 };
 
 const DIRECT: Record<Lang, string> = {
   vi: "Tự nhập",
   en: "Type it myself",
   ko: "직접 입력",
+  id: "Ketik sendiri",
+  ne: "आफैं लेख्ने",
+  uz: "O'zim yozaman",
 };
 
 // 호실·나이 현지화
 function fmtRoom(lang: Lang, room: string): string {
+  const pick = (map: Record<Lang, string>) => map[lang];
   if (room.startsWith("방문")) {
     const n = room.replace("방문", "").trim();
-    return lang === "vi" ? `Thăm nhà ${n}` : lang === "en" ? `Visit ${n}` : room;
+    return pick({ vi: `Thăm nhà ${n}`, en: `Visit ${n}`, ko: room, id: `Kunjungan ${n}`, ne: `भ्रमण ${n}`, uz: `Tashrif ${n}` });
+  }
+  if (room.startsWith("실습")) {
+    const n = room.replace("실습", "").trim();
+    return pick({ vi: `Thực hành ${n}`, en: `Practice ${n}`, ko: room, id: `Praktik ${n}`, ne: `अभ्यास ${n}`, uz: `Amaliyot ${n}` });
   }
   if (room.endsWith("호")) {
     const n = room.slice(0, -1);
-    return lang === "vi" ? `Phòng ${n}` : lang === "en" ? `Room ${n}` : room;
+    return pick({ vi: `Phòng ${n}`, en: `Room ${n}`, ko: room, id: `Kamar ${n}`, ne: `कोठा ${n}`, uz: `${n}-xona` });
   }
   return room;
 }
 function fmtAge(lang: Lang, age: number): string {
-  return lang === "vi" ? `${age} tuổi` : lang === "en" ? `Age ${age}` : `${age}세`;
+  return { vi: `${age} tuổi`, en: `Age ${age}`, ko: `${age}세`, id: `${age} thn`, ne: `${age} वर्ष`, uz: `${age} yosh` }[lang];
 }
 
 
@@ -845,6 +1057,11 @@ export default function CaregiverPage() {
             {lang === "ko" ? "님" : ""} 👋
           </h1>
           <p className="mt-1 text-[13px] text-sub">{facility}</p>
+          {FACILITY_DB.find((f) => f.name === facility)?.edu && (
+            <span className="mt-1.5 inline-block rounded-lg bg-amber-soft px-2 py-1 text-[12px] font-bold text-amber">
+              {t.eduTag}
+            </span>
+          )}
 
           <div className="mt-5 grid grid-cols-3 gap-2.5">
             {[
