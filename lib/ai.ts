@@ -173,6 +173,52 @@ function mockDraft(text: string, lang: Lang): Omit<AiDraft, "aiMode"> {
   };
 }
 
+// ── 반려 사유 번역: 담당자의 한국어 메모 → 작성자 언어 ───────────
+// 외국인 요양보호사가 반려 사유를 모국어로 이해할 수 있게 한다.
+// 번역 실패·모의 모드에서도 한국어 원문은 항상 함께 전달되므로 안전하게 격하된다.
+export async function translateNote(
+  note: string,
+  target: Lang,
+): Promise<string | undefined> {
+  if (target === "ko" || !note.trim()) return undefined;
+  const provider = process.env.ANTHROPIC_API_KEY
+    ? "anthropic"
+    : process.env.OPENAI_API_KEY
+      ? "openai"
+      : "mock";
+  if (provider === "mock") return `[모의 번역] ${note}`;
+
+  const prompt = `다음은 요양 시설 담당자가 요양보호사에게 보낸 짧은 보완 요청 메모입니다.
+${LANG_LABELS[target]}(으)로 자연스럽고 정중하게 번역해 주세요. 번역문만 출력하세요.
+
+${note}`;
+  try {
+    if (provider === "anthropic") {
+      const { default: Anthropic } = await import("@anthropic-ai/sdk");
+      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+      const res = await client.messages.create({
+        model: process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5",
+        max_tokens: 400,
+        messages: [{ role: "user", content: prompt }],
+      });
+      const block = res.content.find((b) => b.type === "text");
+      const text = block && block.type === "text" ? block.text.trim() : "";
+      return text || undefined;
+    }
+    const { default: OpenAI } = await import("openai");
+    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const res = await client.chat.completions.create({
+      model: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
+      max_tokens: 400,
+      messages: [{ role: "user", content: prompt }],
+    });
+    return res.choices[0]?.message?.content?.trim() || undefined;
+  } catch (err) {
+    console.error("[ai] 반려 사유 번역 실패, 한국어 원문만 전달:", err);
+    return undefined;
+  }
+}
+
 // ── 공개 진입점 ──────────────────────────────────────────────────
 export async function generateDraft(text: string, lang: Lang): Promise<AiDraft> {
   const provider = process.env.ANTHROPIC_API_KEY

@@ -56,7 +56,7 @@ export interface Risk {
   source: "ai" | "rule";
 }
 
-export type RecordStatus = "draft" | "confirmed";
+export type RecordStatus = "draft" | "confirmed" | "returned";
 
 export interface CareRecord {
   id: string;
@@ -78,6 +78,12 @@ export interface CareRecord {
   aiMode: "live" | "mock";
   /** 담당자가 확정 시 결정하는 공유 범위 (기본: 기관 내부) */
   shareScope?: "internal" | "family";
+  /** 반려 시 담당자가 남기는 보완 요청 사유 (한국어 원문) */
+  returnNote?: string;
+  /** 반려 사유를 작성자 언어로 AI 번역한 것 (작성자가 한국어면 생략) */
+  returnNoteTranslated?: string;
+  /** 반려 이력 로그 — 재제출된 기록을 재검토할 때 과거 반려 사유 참고용 */
+  returnHistory?: { note: string; at: string }[];
 }
 
 export interface AiDraft {

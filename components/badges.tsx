@@ -8,7 +8,17 @@ export function RiskBadge({ risk }: { risk: Risk }) {
   );
 }
 
-export function StatusTag({ status }: { status: "draft" | "confirmed" }) {
+export function StatusTag({
+  status,
+}: {
+  status: "draft" | "confirmed" | "returned";
+}) {
+  if (status === "returned")
+    return (
+      <span className="rounded-lg bg-red-soft px-2 py-1 text-[12px] font-bold text-red">
+        반려
+      </span>
+    );
   return status === "draft" ? (
     <span className="rounded-lg bg-amber-soft px-2 py-1 text-[12px] font-bold text-amber">
       검토 대기

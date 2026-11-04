@@ -71,13 +71,18 @@ function toRow(r: Partial<CareRecord>) {
   if (r.lang !== undefined) row.lang = r.lang;
   if (r.originalText !== undefined) row.original_text = r.originalText;
   if (r.translationKo !== undefined) row.translation_ko = r.translationKo;
-  if (r.backTranslation !== undefined) row.back_translation = r.backTranslation;
+  // 아래 셋은 "undefined로 지우기"가 필요한 필드 — 키가 있으면 null로라도 반영
+  if ("backTranslation" in r) row.back_translation = r.backTranslation ?? null;
   if (r.fields !== undefined) row.fields = r.fields;
   if (r.risks !== undefined) row.risks = r.risks;
   if (r.status !== undefined) row.status = r.status;
   if (r.confirmedAt !== undefined) row.confirmed_at = r.confirmedAt;
   if (r.aiMode !== undefined) row.ai_mode = r.aiMode;
   if (r.shareScope !== undefined) row.share_scope = r.shareScope;
+  if ("returnNote" in r) row.return_note = r.returnNote ?? null;
+  if ("returnNoteTranslated" in r)
+    row.return_note_translated = r.returnNoteTranslated ?? null;
+  if (r.returnHistory !== undefined) row.return_history = r.returnHistory;
   return row;
 }
 function fromRow(row: any): CareRecord {
@@ -95,6 +100,9 @@ function fromRow(row: any): CareRecord {
     confirmedAt: row.confirmed_at ?? undefined,
     aiMode: row.ai_mode ?? "live",
     shareScope: row.share_scope ?? "internal",
+    returnNote: row.return_note ?? undefined,
+    returnNoteTranslated: row.return_note_translated ?? undefined,
+    returnHistory: row.return_history ?? undefined,
   };
 }
 

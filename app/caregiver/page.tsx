@@ -16,6 +16,7 @@ import {
 import {
   Avatar,
   fmtClock,
+  fmtTime,
   ModeTag,
   RiskBadge,
 } from "@/components/badges";
@@ -89,6 +90,10 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawConfirm: "Xóa tài khoản",
     cancel: "Hủy",
     eduTag: "Luyện tập ghi chép",
+    statusReturned: "Bị trả lại",
+    reviseCta: "Sửa và gửi lại",
+    returnedEmpty: "Không có ghi chép bị trả lại",
+    emptyList: "Không có ghi chép",
   },
   en: {
     heading: "Who did you\ncare for today?",
@@ -144,6 +149,10 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawConfirm: "Delete account",
     cancel: "Cancel",
     eduTag: "Record training",
+    statusReturned: "Returned",
+    reviseCta: "Fix and resend",
+    returnedEmpty: "No returned notes",
+    emptyList: "No notes yet",
   },
   ko: {
     heading: "오늘 누구를\n돌보셨나요?",
@@ -199,6 +208,10 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawConfirm: "탈퇴하기",
     cancel: "취소",
     eduTag: "기록 연습 과정",
+    statusReturned: "반려됨",
+    reviseCta: "수정해서 다시 보내기",
+    returnedEmpty: "반려된 기록이 없어요",
+    emptyList: "기록이 없어요",
   },
   id: {
     heading: "Hari ini Anda\nmerawat siapa?",
@@ -254,6 +267,10 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawConfirm: "Hapus akun",
     cancel: "Batal",
     eduTag: "Latihan pencatatan",
+    statusReturned: "Dikembalikan",
+    reviseCta: "Perbaiki & kirim ulang",
+    returnedEmpty: "Tidak ada catatan yang dikembalikan",
+    emptyList: "Tidak ada catatan",
   },
   ne: {
     heading: "आज तपाईंले\nकसको हेरचाह गर्नुभयो?",
@@ -309,6 +326,10 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawConfirm: "मेटाउनुहोस्",
     cancel: "रद्द",
     eduTag: "रेकर्ड अभ्यास",
+    statusReturned: "फिर्ता पठाइयो",
+    reviseCta: "सच्याएर फेरि पठाउनुहोस्",
+    returnedEmpty: "फिर्ता पठाइएको टिपोट छैन",
+    emptyList: "टिपोट छैन",
   },
   uz: {
     heading: "Bugun kimga\ng'amxo'rlik qildingiz?",
@@ -364,6 +385,10 @@ const T: Record<Lang, Record<string, string>> = {
     withdrawConfirm: "O'chirish",
     cancel: "Bekor",
     eduTag: "Yozuv mashqi",
+    statusReturned: "Qaytarildi",
+    reviseCta: "To'g'rilab qayta yuborish",
+    returnedEmpty: "Qaytarilgan yozuvlar yo'q",
+    emptyList: "Yozuvlar yo'q",
   },
 };
 
@@ -434,7 +459,7 @@ const EXAMPLES: Record<Lang, string> = {
 };
 
 type Step = "edit" | "preview" | "sent";
-type View = "home" | "write" | "today" | "my";
+type View = "home" | "write" | "today" | "my" | "list";
 
 // 핵심 커버리지 항목 — 실제 요양 기록일지에서 매일 반복되는 3대 항목
 const CORE_KEYS = ["meal", "excretion", "sleep"] as const;
@@ -503,8 +528,12 @@ export default function CaregiverPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [view, setView] = useState<View>("home");
+  const [listStatus, setListStatus] = useState<
+    "draft" | "confirmed" | "returned"
+  >("returned");
   const [openCat, setOpenCat] = useState<string | null>(null);
   const [showKo, setShowKo] = useState(false);
+  const [reviseId, setReviseId] = useState<string | null>(null);
   const [records, setRecords] = useState<CareRecord[]>([]);
   const [todosLeft, setTodosLeft] = useState(0);
   const taRef = useRef<HTMLTextAreaElement | null>(null);
@@ -553,7 +582,7 @@ export default function CaregiverPage() {
   // 홈·마이에서 쓰는 기록 통계
   useEffect(() => {
     if (!onboarded) return;
-    if (view !== "home" && view !== "my") return;
+    if (view !== "home" && view !== "my" && view !== "list") return;
     fetch("/api/records")
       .then((r) => r.json())
       .then((d) => {
@@ -653,11 +682,22 @@ export default function CaregiverPage() {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("/api/records", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ patientId, lang, text, draft }),
-      });
+      const res = reviseId
+        ? await fetch(`/api/records/${reviseId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "resubmit",
+              originalText: text,
+              lang,
+              draft,
+            }),
+          })
+        : await fetch("/api/records", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ patientId, lang, text, draft }),
+          });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "전송에 실패했어요");
       setStep("sent");
@@ -675,6 +715,15 @@ export default function CaregiverPage() {
     setStep("edit");
     setError("");
     setOpenCat(null);
+    setReviseId(null);
+  }
+
+  function startRevise(rec: CareRecord) {
+    setPatientId(rec.patientId);
+    setText(rec.originalText);
+    setReviseId(rec.id);
+    setStep("edit");
+    setView("write");
   }
 
   if (!ready) return null;
@@ -1044,6 +1093,7 @@ export default function CaregiverPage() {
 
   // ── 통계 ──
   const pendingN = records.filter((r) => r.status === "draft").length;
+  const returnedN = records.filter((r) => r.status === "returned").length;
   const confirmedN = records.filter((r) => r.status === "confirmed").length;
   const riskN = records.reduce((n, r) => n + r.risks.length, 0);
 
@@ -1063,18 +1113,55 @@ export default function CaregiverPage() {
             </span>
           )}
 
-          <div className="mt-5 grid grid-cols-3 gap-2.5">
+          <div className="mt-5 grid grid-cols-2 gap-2.5">
             {[
-              { n: pendingN, label: t.statPending, cls: "text-amber" },
-              { n: confirmedN, label: t.statConfirmed, cls: "text-green" },
-              { n: todosLeft, label: t.statTodos, cls: "text-blue" },
+              {
+                n: pendingN,
+                label: t.statPending,
+                cls: "text-amber",
+                onTap: () => {
+                  setListStatus("draft");
+                  setView("list");
+                },
+              },
+              {
+                n: confirmedN,
+                label: t.statConfirmed,
+                cls: "text-green",
+                onTap: () => {
+                  setListStatus("confirmed");
+                  setView("list");
+                },
+              },
+              {
+                n: returnedN,
+                label: t.statusReturned,
+                cls: "text-red",
+                alert: returnedN > 0,
+                onTap: () => {
+                  setListStatus("returned");
+                  setView("list");
+                },
+              },
+              {
+                n: todosLeft,
+                label: t.statTodos,
+                cls: "text-blue",
+                onTap: () => setView("today"),
+              },
             ].map((s) => (
-              <div key={s.label} className="rounded-3xl bg-white p-4">
+              <button
+                key={s.label}
+                onClick={s.onTap}
+                className={`rounded-3xl bg-white p-4 text-left transition active:scale-[0.98] ${
+                  s.alert ? "ring-2 ring-red/30" : ""
+                }`}
+              >
                 <p className={`text-[22px] font-extrabold ${s.cls}`}>{s.n}</p>
                 <p className="mt-0.5 text-[12px] font-semibold text-sub">
-                  {s.label}
+                  {s.label} ›
                 </p>
-              </div>
+              </button>
             ))}
           </div>
 
@@ -1121,8 +1208,104 @@ export default function CaregiverPage() {
         </div>
       )}
 
+      {/* ── 상태별 기록 목록 (검토 대기 / 확정 / 반려) ── */}
+      {view === "list" && (
+        <div className="pt-2">
+          <button
+            onClick={() => setView("home")}
+            className="text-[22px] text-sub"
+          >
+            ‹
+          </button>
+          <h1 className="mt-1 text-[22px] font-extrabold tracking-tight">
+            {listStatus === "draft"
+              ? t.statPending
+              : listStatus === "confirmed"
+                ? t.statConfirmed
+                : t.statusReturned}
+          </h1>
+          {(() => {
+            const items = records
+              .filter((r) => r.status === listStatus)
+              .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+            return items.length === 0 ? (
+              <p className="pt-16 text-center text-[14px] text-faint">
+                {listStatus === "returned" ? t.returnedEmpty : t.emptyList}
+              </p>
+            ) : (
+              <ul className="mt-4 space-y-2.5">
+                {items.map((r) => (
+                  <li key={r.id} className="rounded-3xl bg-white p-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[15px] font-bold">
+                        {getPatient(r.patientId)?.name}
+                      </span>
+                      <span className="text-[12px] text-faint">
+                        {fmtTime(r.createdAt)}
+                      </span>
+                      <span
+                        className={`ml-auto rounded-lg px-2 py-1 text-[12px] font-bold ${
+                          r.status === "returned"
+                            ? "bg-red-soft text-red"
+                            : r.status === "draft"
+                              ? "bg-amber-soft text-amber"
+                              : "bg-green-soft text-green"
+                        }`}
+                      >
+                        {r.status === "returned"
+                          ? t.statusReturned
+                          : r.status === "draft"
+                            ? t.statPending
+                            : t.statConfirmed}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-[14px] text-sub">
+                      {lang !== "ko" && r.backTranslation
+                        ? r.backTranslation
+                        : r.translationKo}
+                    </p>
+                    {r.status === "returned" && r.returnNote && (
+                      <div className="mt-2 rounded-xl bg-red-soft/60 p-3">
+                        {lang !== "ko" && r.returnNoteTranslated && (
+                          <p className="text-[13px] font-semibold leading-relaxed text-ink">
+                            {r.returnNoteTranslated}
+                          </p>
+                        )}
+                        <p
+                          className={`text-[13px] leading-relaxed ${
+                            lang !== "ko" && r.returnNoteTranslated
+                              ? "mt-1 text-sub"
+                              : "text-ink"
+                          }`}
+                        >
+                          {r.returnNote}
+                        </p>
+                      </div>
+                    )}
+                    {r.status === "returned" && (
+                      <button
+                        onClick={() => startRevise(r)}
+                        className="mt-2.5 w-full rounded-xl bg-red py-3 text-[14px] font-bold text-white transition active:scale-[0.98]"
+                      >
+                        {t.reviseCta}
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            );
+          })()}
+        </div>
+      )}
+
       {/* ── 오늘 ── */}
-      {view === "today" && <TodayView lang={lang} facility={facility} />}
+      {view === "today" && (
+        <TodayView
+          lang={lang}
+          facility={facility}
+          onRevise={startRevise}
+        />
+      )}
 
       {/* ── 마이 ── */}
       {view === "my" && (
@@ -1548,7 +1731,15 @@ function saveAllTodos(all: Todo[]) {
   } catch {}
 }
 
-function TodayView({ lang, facility }: { lang: Lang; facility: string }) {
+function TodayView({
+  lang,
+  facility,
+  onRevise,
+}: {
+  lang: Lang;
+  facility: string;
+  onRevise: (rec: CareRecord) => void;
+}) {
   const t = T[lang];
   const [todos, setTodos] = useState<Todo[]>([]);
   const [records, setRecords] = useState<CareRecord[]>([]);
@@ -1570,7 +1761,8 @@ function TodayView({ lang, facility }: { lang: Lang; facility: string }) {
           (d.records ?? []).filter(
             (r: CareRecord) =>
               ids.has(r.patientId) &&
-              new Date(r.createdAt).toDateString() === today,
+              (r.status === "returned" ||
+                new Date(r.createdAt).toDateString() === today),
           ),
         );
       })
@@ -1746,14 +1938,18 @@ function TodayView({ lang, facility }: { lang: Lang; facility: string }) {
                       </span>
                       <span
                         className={`rounded-lg px-2 py-1 text-[12px] font-bold ${
-                          en.rec!.status === "draft"
-                            ? "bg-amber-soft text-amber"
-                            : "bg-green-soft text-green"
+                          en.rec!.status === "returned"
+                            ? "bg-red-soft text-red"
+                            : en.rec!.status === "draft"
+                              ? "bg-amber-soft text-amber"
+                              : "bg-green-soft text-green"
                         }`}
                       >
-                        {en.rec!.status === "draft"
-                          ? t.statPending
-                          : t.statConfirmed}
+                        {en.rec!.status === "returned"
+                          ? t.statusReturned
+                          : en.rec!.status === "draft"
+                            ? t.statPending
+                            : t.statConfirmed}
                       </span>
                     </div>
                     <p className="mt-1 truncate text-[14px] text-sub">
@@ -1761,6 +1957,32 @@ function TodayView({ lang, facility }: { lang: Lang; facility: string }) {
                         ? en.rec!.backTranslation
                         : en.rec!.translationKo}
                     </p>
+                    {en.rec!.status === "returned" && (
+                      <div className="mt-2.5 rounded-2xl bg-red-soft/60 p-3">
+                        {lang !== "ko" && en.rec!.returnNoteTranslated && (
+                          <p className="text-[13px] font-semibold leading-relaxed text-ink">
+                            {en.rec!.returnNoteTranslated}
+                          </p>
+                        )}
+                        {en.rec!.returnNote && (
+                          <p
+                            className={`text-[13px] leading-relaxed ${
+                              lang !== "ko" && en.rec!.returnNoteTranslated
+                                ? "mt-1 text-sub"
+                                : "text-ink"
+                            }`}
+                          >
+                            {en.rec!.returnNote}
+                          </p>
+                        )}
+                        <button
+                          onClick={() => onRevise(en.rec!)}
+                          className="mt-2 w-full rounded-xl bg-white py-2.5 text-[13px] font-bold text-red transition active:scale-[0.98]"
+                        >
+                          {t.reviseCta}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </li>

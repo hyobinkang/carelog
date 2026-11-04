@@ -14,7 +14,7 @@ import {
   RiskBadge,
 } from "@/components/badges";
 
-type Tab = "draft" | "confirmed";
+type Tab = "draft" | "returned" | "confirmed";
 
 export default function StaffPage() {
   const auth = useStaffAuth();
@@ -61,21 +61,21 @@ export default function StaffPage() {
   }
 
   const load = useCallback(async () => {
-  	setLoading(true);
-  	setLoadError(false);
-  	try {
-    	const qs = new URLSearchParams({ status: tab });
-    	if (patientFilter) qs.set("patientId", patientFilter);
-    	const res = await fetch(`/api/records?${qs}`);
-    	if (!res.ok) throw new Error(String(res.status));
-    	const data = await res.json();
-    	setRecords(data.records ?? []);
-  	} catch {
-    	setRecords([]);
-    	setLoadError(true);
-  	} finally {
-    	setLoading(false);
-  	}
+    setLoading(true);
+    setLoadError(false);
+    try {
+      const qs = new URLSearchParams({ status: tab });
+      if (patientFilter) qs.set("patientId", patientFilter);
+      const res = await fetch(`/api/records?${qs}`);
+      if (!res.ok) throw new Error(String(res.status));
+      const data = await res.json();
+      setRecords(data.records ?? []);
+    } catch {
+      setRecords([]);
+      setLoadError(true);
+    } finally {
+      setLoading(false);
+    }
   }, [tab, patientFilter]);
 
   useEffect(() => {
@@ -164,7 +164,7 @@ export default function StaffPage() {
       )}
 
       <div className="mt-4 flex rounded-2xl bg-line/50 p-1 text-[13px] font-semibold">
-        {(["draft", "confirmed"] as Tab[]).map((v) => (
+        {(["draft", "returned", "confirmed"] as Tab[]).map((v) => (
           <button
             key={v}
             onClick={() => setTab(v)}
@@ -172,7 +172,7 @@ export default function StaffPage() {
               tab === v ? "bg-white text-ink shadow-sm" : "text-sub"
             }`}
           >
-            {v === "draft" ? "검토 대기" : "확정"}
+            {v === "draft" ? "검토 대기" : v === "returned" ? "반려" : "확정"}
           </button>
         ))}
       </div>
@@ -207,13 +207,18 @@ export default function StaffPage() {
           (r) => facIds.has(r.patientId) && assigned.includes(r.patientId),
         );
         return loadError ? (
-  			<div className="pt-16 text-center">
-    			<p className="text-[15px] font-semibold text-sub">기록을 불러오지 못했어요</p>
-    			<button onClick={load} className="mt-3 rounded-xl bg-white px-4 py-2 text-[13px] font-semibold text-blue transition active:scale-[0.97]">
-      				다시 시도
-    			</button>
-  			</div>
-		) : assigned.length === 0 ? (
+          <div className="pt-16 text-center">
+            <p className="text-[15px] font-semibold text-sub">
+              기록을 불러오지 못했어요
+            </p>
+            <button
+              onClick={load}
+              className="mt-3 rounded-xl bg-white px-4 py-2 text-[13px] font-semibold text-blue transition active:scale-[0.97]"
+            >
+              다시 시도
+            </button>
+          </div>
+        ) : assigned.length === 0 ? (
           <div className="pt-16 text-center">
             <p className="text-[15px] font-semibold text-sub">
               아직 담당 어르신이 없어요
@@ -227,7 +232,7 @@ export default function StaffPage() {
       ) : visible.length === 0 ? (
         <div className="pt-16 text-center">
           <p className="text-[15px] font-semibold text-sub">
-            {tab === "draft" ? "검토할 기록이 없어요" : "확정된 기록이 없어요"}
+            {tab === "draft" ? "검토할 기록이 없어요" : tab === "returned" ? "반려된 기록이 없어요" : "확정된 기록이 없어요"}
           </p>
         </div>
       ) : (

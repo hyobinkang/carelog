@@ -9,9 +9,12 @@ create table if not exists care_records (
   back_translation text,
   fields jsonb not null default '{}',
   risks jsonb not null default '[]',
-  status text not null default 'draft' check (status in ('draft', 'confirmed')),
+  status text not null default 'draft' check (status in ('draft', 'confirmed', 'returned')),
   ai_mode text not null default 'live',
   share_scope text not null default 'internal' check (share_scope in ('internal', 'family')),
+  return_note text,
+  return_note_translated text,
+  return_history jsonb not null default '[]',
   created_at timestamptz not null default now(),
   confirmed_at timestamptz
 );
